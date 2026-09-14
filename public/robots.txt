@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Private application pages and payment endpoints must not be indexed.
+Disallow: /dashboard
+Disallow: /api-keys
+Disallow: /docs
+Disallow: /login
+Disallow: /register
+Disallow: /api/
+
+Sitemap: https://konektimalipo.deeteki.com/sitemap.xml
