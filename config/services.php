@@ -4,6 +4,12 @@ return [
 
     'konekti' => ['admin_email' => env('ADMIN_EMAIL')],
 
+    'sms' => [
+        'token' => env('SMS_API_TOKEN'),
+        'from' => env('SMS_FROM', 'DEETEKI'),
+        'url' => env('SMS_API_URL', 'https://messaging-service.co.tz/api/sms/v2/text/single'),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Third Party Services

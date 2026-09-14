@@ -15,7 +15,8 @@ final class AuthController extends Controller
     public function showRegister() { return view('auth.register'); }
     public function register(Request $request): RedirectResponse
     {
-        $data = $request->validate(['name' => ['required','string','max:100'], 'email' => ['required','email','max:255','unique:users'], 'password' => ['required','confirmed','min:8']]);
+        $data = $request->validate(['name' => ['required','string','max:100'], 'email' => ['required','email','max:255','unique:users'], 'phone' => ['required','string','regex:/^(?:\\+?255|0)[67][0-9]{8}$/','unique:users'], 'password' => ['required','confirmed','min:8']]);
+        $data['phone'] = '255'.substr(preg_replace('/[^0-9]/', '', $data['phone']), -9);
         $user = User::create($data); Auth::login($user); $request->session()->regenerate();
         return redirect()->route('dashboard')->with('success', 'Karibu Konekti Malipo.');
     }

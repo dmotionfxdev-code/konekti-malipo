@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GatewayAccountController;
 use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PhoneOtpController;
 
 Route::get('/', function () {
     $page = view('welcome')->render();
@@ -19,10 +20,15 @@ Route::get('/sitemap.xml', function () {
 })->name('sitemap');
 Route::middleware('guest')->group(function (): void {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login'); Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:6,1');
+    Route::get('/login/phone', [PhoneOtpController::class, 'show'])->name('login.phone');
+    Route::post('/login/phone', [PhoneOtpController::class, 'send'])->middleware('throttle:3,10')->name('login.phone.send');
+    Route::get('/login/phone/verify', [PhoneOtpController::class, 'showVerify'])->name('login.phone.verify');
+    Route::post('/login/phone/verify', [PhoneOtpController::class, 'verify'])->middleware('throttle:5,10')->name('login.phone.verify.submit');
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register'); Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:6,1');
 });
 Route::middleware('auth')->group(function (): void {
     Route::get('/admin', [AdminController::class, 'index'])->middleware('admin')->name('admin.dashboard');
+    Route::post('/admin/sms-settings', [AdminController::class, 'updateSms'])->middleware('admin')->name('admin.sms-settings');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/docs', [DashboardController::class, 'docs'])->name('docs');
     Route::post('/gateway-accounts/pesapal', [GatewayAccountController::class, 'store'])->name('gateway-accounts.pesapal.store');
