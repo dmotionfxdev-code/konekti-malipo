@@ -13,6 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias(['throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class, 'api.key' => \App\Http\Middleware\AuthenticateApiKey::class, 'admin' => \App\Http\Middleware\EnsureAdmin::class]);
+        $middleware->web(append: [\App\Http\Middleware\InjectBrandAssets::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

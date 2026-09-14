@@ -8,7 +8,10 @@ use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
-    return view('welcome');
+    $page = view('welcome')->render();
+    $section = view('partials.integrations')->render();
+    $styles = '<style>.integration-return{display:grid;grid-template-columns:1fr 1fr;gap:42px;align-items:center}.integration-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.integration-item{border:1px solid #dbe3da;border-radius:14px;background:#fffefa;padding:18px}.integration-item span{float:right;color:#147b67;font:11px "DM Mono",monospace}.integration-item.muted{opacity:.55}@media(max-width:780px){.integration-return{grid-template-columns:1fr}.integration-grid{gap:9px}}</style>';
+    return response(str_replace('<section id="pricing"', $styles.$section.'<section id="pricing"', $page));
 })->name('home');
 Route::get('/sitemap.xml', function () {
     $urls = [['loc' => route('home'), 'priority' => '1.0', 'changefreq' => 'weekly']];
